@@ -34,7 +34,7 @@ export function main() {
         console.log("*****************************************************");
         console.log("                                                     ");
         console.log("           1 - Comprar ingresso                      ");
-        console.log("           2 - Listar todos seus ingressos           ");
+        console.log("           2 - Listar todos os ingressos           ");
         console.log("           3 - Buscar ingresso                       ");
         console.log("           4 - Alterar dados do ingresso             ");
         console.log("           5 - Apagar ingresso                       ");
