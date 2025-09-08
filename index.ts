@@ -1,10 +1,30 @@
 import leia = require('readline-sync');
+import { IngressoFisico } from './src/model/IngressoFisico';
+import { IngressoVirtual } from './src/model/IngressoVirtual';
+import { IngressoController } from './src/controller/IngressoController';
 
 export function main() {
 
-    let opcao: number, idade: number, tipo: number;
+    let opcao: number, valor: number, tipo: number, taxa: number, desconto: number, numero: number;
     let continuar: boolean = true;
-    let nome: string;
+    let titular: string, novoTitular: string;
+
+    let ingressos: IngressoController = new IngressoController();
+    const tiposIngressos = ["Ingresso físico", "Ingresso virtual"];
+
+    let if1: IngressoFisico = new IngressoFisico("Gabriel Messias", 1, 100.0, 1, 0.1);
+    ingressos.comprarIngresso(if1);
+
+    let if2: IngressoFisico = new IngressoFisico("Messias Gabriel", 1, 70, 2, 0.05);
+    ingressos.comprarIngresso(if2);
+
+    let iv1: IngressoVirtual = new IngressoVirtual("Messias Veloso", 2, 50, 3, 0.1);
+    ingressos.comprarIngresso(iv1);
+
+    let iv2: IngressoVirtual = new IngressoVirtual("Veloso Messias", 2, 30, 4, 0.05);
+    ingressos.comprarIngresso(iv2);
+
+    ingressos.listarTodos();
 
     do {
         console.log("\n*****************************************************");
@@ -31,42 +51,68 @@ export function main() {
                 console.log("Para comprar ingresso, digite os dados abaixo:");
                 
                 console.log("Digite seu nome: ");
-                nome = leia.question();
+                titular = leia.question();
                 
-                console.log("Digite sua idade: ");
-                idade = leia.questionInt();
+                console.log("Digite o valor do ingresso: ");
+                valor = leia.questionFloat();
                 
                 console.log("Digite o tipo de ingresso: [1] - Físico / [2] - Virtual");
                 tipo = leia.questionInt();
-                
-                switch (tipo) {
-                    case 1:
-                        console.log("Ingresso físico comprado com sucesso!");
-                        break;
-                    case 2:
-                        console.log("Ingresso virtual comprado com sucesso!");
-                        break;
-                    default:
-                        console.log("Opção inválida");
-                        break;
-                }
+
+                    switch (tipo) {
+                        case 1:
+                            console.log("Digite a taxa de ingresso: ");
+                            taxa = leia.questionFloat();
+                            ingressos.comprarIngresso(new IngressoFisico(titular, tipo, valor, ingressos.gerarNumero(), taxa));
+                            break;
+                        case 2:
+                            console.log("Digite o desconto: ");
+                            desconto = leia.questionFloat();
+                            ingressos.comprarIngresso(new IngressoVirtual(titular, tipo, valor, ingressos.gerarNumero(), desconto));
+                            break;
+                    }
 
                 keyPress();
                 break;
             case 2:
-                console.log("Listar todos seus ingressos");
+                console.log("Listar todos ingressos");
+                ingressos.listarTodos();
                 keyPress();
                 break;
             case 3:
                 console.log("Buscar ingresso por numero");
+                console.log("\nDigite o numero do ingresso: ");
+                numero = leia.questionInt();
+                ingressos.procurarIngresso(numero);
                 keyPress();
                 break;
             case 4:
                 console.log("Alterar dados do ingresso");
+
+                console.log("\nDigite o numero do ingresso: ");
+                numero = leia.questionInt('');
+
+                console.log("\nDigite o novo titular: ");
+                novoTitular = leia.question('');
+
+                let ingresso = ingressos.buscarNoArray(numero);
+
+                if (ingresso !== null) {
+                    ingressos.alterarTitular(ingresso, novoTitular);
+                } else {
+                    console.log(`Ingresso número ${numero} não encontrado!`);
+                }
+            
                 keyPress();
                 break;
             case 5:
                 console.log("Apagar ingresso");
+
+                console.log("\nDigite o numero do ingresso: ");
+                numero = leia.questionInt('');
+
+                ingressos.deletarIngresso(numero);
+                
                 keyPress();
                 break;
             case 6:
