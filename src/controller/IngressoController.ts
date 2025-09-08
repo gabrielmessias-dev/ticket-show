@@ -20,18 +20,18 @@ export class IngressoController implements IngressoRepository {
             console.log(`Ingresso número ${numero} não encontrado!`);
         }
     }
+    // forEach - metodo collection para listar todos os ingressos
     listarTodos(): void {
-        for(let ingresso of this.listaIngressos) {
-            ingresso.visualizar();
-        }
+    this.listaIngressos.forEach(ingresso => ingresso.visualizar());
     }
+
     procurarIngresso(numero: number): void {
         let buscaIngresso = this.buscarNoArray(numero);
 
         if(buscaIngresso !== null) {
             buscaIngresso.visualizar();
         } else {
-            console.log(`Ingresso número ${numero} não encontrado!`);
+            throw new Error(`Ingresso número ${numero} não encontrado!`); // lança uma exception no controller
         }
     }
     alterarTitular(ingresso: Ingresso, novoTitular: string): void {

@@ -81,9 +81,15 @@ export function main() {
                 break;
             case 3:
                 console.log("Buscar ingresso por numero");
-                console.log("\nDigite o numero do ingresso: ");
-                numero = leia.questionInt();
-                ingressos.procurarIngresso(numero);
+
+                // utilizando try/catch para tratar erros - exceptions
+                try {
+                    console.log("\nDigite o numero do ingresso: ");
+                    numero = leia.questionInt();
+                    ingressos.procurarIngresso(numero);
+                } catch (error: any) {
+                    console.log(`Erro: ${error.message}`);
+                }
                 keyPress();
                 break;
             case 4:
@@ -143,4 +149,5 @@ export function sobre(): void {
     console.log("github.com/gabrielmessias-dev");
     console.log("******************************************************");  
     }
+    
 main();
